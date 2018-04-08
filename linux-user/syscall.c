@@ -6400,6 +6400,8 @@ static int do_futex(target_ulong uaddr, int op, int val, target_ulong timeout,
                                     (base_op == FUTEX_CMP_REQUEUE
                                      ? tswap32(val3)
                                      : val3)));
+    case FUTEX_UNLOCK_PI:
+        return get_errno(safe_futex(g2h(uaddr), op, val, NULL, NULL, 0));
     default:
         return -TARGET_ENOSYS;
     }
