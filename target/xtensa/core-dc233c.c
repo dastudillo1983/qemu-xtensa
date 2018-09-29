@@ -44,7 +44,7 @@ static XtensaConfig dc233c __attribute__((unused)) = {
         }
     },
     .isa_internal = &xtensa_modules,
-    .clock_freq_khz = 10000,
+    .clock_freq_khz = 40000,
     DEFAULT_SECTIONS
 };
 
