@@ -2139,8 +2139,8 @@ static void translate_rtlb(DisasContext *dc, const uint32_t arg[],
 #endif
 }
 
-static void translate_rur(DisasContext *dc, const uint32_t arg[],
-                          const uint32_t par[])
+void translate_rur(DisasContext *dc, const uint32_t arg[],
+                   const uint32_t par[])
 {
     if (uregnames[par[0]].name) {
         tcg_gen_mov_i32(cpu_R[arg[0]], cpu_UR[par[0]]);
@@ -2429,8 +2429,8 @@ static void translate_wsr(DisasContext *dc, const uint32_t arg[],
     gen_wsr(dc, par[0], cpu_R[arg[0]]);
 }
 
-static void translate_wur(DisasContext *dc, const uint32_t arg[],
-                          const uint32_t par[])
+void translate_wur(DisasContext *dc, const uint32_t arg[],
+                   const uint32_t par[])
 {
     if (uregnames[par[0]].name) {
         gen_wur(par[0], cpu_R[arg[0]]);
