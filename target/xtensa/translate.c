@@ -246,11 +246,9 @@ void xtensa_translate_init(void)
     }
 
     for (i = 0; i < 256; ++i) {
-        if (uregnames[i].name) {
-            cpu_UR[i] = tcg_global_mem_new_i32(cpu_env,
-                    offsetof(CPUXtensaState, uregs[i]),
-                    uregnames[i].name);
-        }
+        cpu_UR[i] = tcg_global_mem_new_i32(cpu_env,
+                                           offsetof(CPUXtensaState, uregs[i]),
+                                           uregnames[i].name);
     }
 }
 
@@ -2142,11 +2140,7 @@ static void translate_rtlb(DisasContext *dc, const uint32_t arg[],
 void translate_rur(DisasContext *dc, const uint32_t arg[],
                    const uint32_t par[])
 {
-    if (uregnames[par[0]].name) {
-        tcg_gen_mov_i32(cpu_R[arg[0]], cpu_UR[par[0]]);
-    } else {
-        qemu_log_mask(LOG_UNIMP, "RUR %d not implemented\n", par[0]);
-    }
+    tcg_gen_mov_i32(cpu_R[arg[0]], cpu_UR[par[0]]);
 }
 
 static void translate_setb_expstate(DisasContext *dc, const uint32_t arg[],
@@ -2432,11 +2426,7 @@ static void translate_wsr(DisasContext *dc, const uint32_t arg[],
 void translate_wur(DisasContext *dc, const uint32_t arg[],
                    const uint32_t par[])
 {
-    if (uregnames[par[0]].name) {
-        gen_wur(par[0], cpu_R[arg[0]]);
-    } else {
-        qemu_log_mask(LOG_UNIMP, "WUR %d not implemented\n", par[0]);
-    }
+    gen_wur(par[0], cpu_R[arg[0]]);
 }
 
 static void translate_xor(DisasContext *dc, const uint32_t arg[],
