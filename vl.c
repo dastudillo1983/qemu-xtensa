@@ -3854,6 +3854,24 @@ int main(int argc, char **argv, char **envp)
 
     configure_rtc(qemu_find_opts_singleton("rtc"));
 
+    /* Open the logfile at this point and set the log mask if necessary.
+     */
+    if (log_file) {
+        qemu_set_log_filename(log_file, &error_fatal);
+    }
+
+    if (log_mask) {
+        int mask;
+        mask = qemu_str_to_log_mask(log_mask);
+        if (!mask) {
+            qemu_print_log_usage(stdout);
+            exit(1);
+        }
+        qemu_set_log(mask);
+    } else {
+        qemu_set_log(0);
+    }
+
     machine_class = select_machine();
     object_set_machine_compat_props(machine_class->compat_props);
 
@@ -3929,24 +3947,6 @@ int main(int argc, char **argv, char **envp)
         exit(1);
     }
     trace_init_file(trace_file);
-
-    /* Open the logfile at this point and set the log mask if necessary.
-     */
-    if (log_file) {
-        qemu_set_log_filename(log_file, &error_fatal);
-    }
-
-    if (log_mask) {
-        int mask;
-        mask = qemu_str_to_log_mask(log_mask);
-        if (!mask) {
-            qemu_print_log_usage(stdout);
-            exit(1);
-        }
-        qemu_set_log(mask);
-    } else {
-        qemu_set_log(0);
-    }
 
     /* add configured firmware directories */
     dirs = g_strsplit(CONFIG_QEMU_FIRMWAREPATH, G_SEARCHPATH_SEPARATOR_S, 0);
